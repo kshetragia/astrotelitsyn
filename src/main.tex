@@ -1,0 +1,298 @@
+\documentclass[a4paper,oneside,12pt]{book}
+
+% headings
+\author{Станиславский С., Телицын А.}
+\title{Индийская предсказательная астрология}
+\date{\today}
+
+% -------------------------------------------------------
+% Языки и шрифты
+% -------------------------------------------------------
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}    % babel ругается без этого
+\usepackage{indentfirst} % красная строка после заголовков (chapter, *section)
+\usepackage[english, russian]{babel}
+
+% Sanskrit support
+\usepackage{skt}
+
+% Zodiac and planets support
+\usepackage{wasysym} % normal
+\usepackage{marvosym} % bold
+
+% Шрифты по умолчанию(computer modern)
+\renewcommand{\rmdefault}{cmr}
+\renewcommand{\sfdefault}{cmss}
+\renewcommand{\ttdefault}{cmtt}
+
+% Добавить бутора
+\usepackage{lipsum}
+
+% Заметки на полях FIXme
+\usepackage[inline]{fixme}
+
+% Поддержка опциональных аргументов вида ключ=значение, к примеру, для новых команд
+\usepackage{keyval}
+
+% поддержка эпиграфов
+\usepackage{epigraph}
+
+% поворот чего угодно
+\usepackage{lscape}
+
+% -------------------------------------------------------
+% Графика
+% -------------------------------------------------------
+% Картинки
+\usepackage[dvips]{graphicx}
+\graphicspath{{pics/}}
+%\usepackage{wrapfig} % обтекание рисунка текстом.
+
+% Векторная графика
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+% -------------------------------------------------------
+% Математика
+% -------------------------------------------------------
+\usepackage{amsmath}
+
+% Русские шрифты в наборе формул
+\usepackage{mathtext}
+\DeclareSymbolFont{T2Aletters}{T2A}{cmr}{m}{it}
+
+% -------------------------------------------------------
+% Настройка оглавления
+% -------------------------------------------------------
+% Отображать только один уровень без подглав.
+% 0 - chapter
+% 1 - chapter и section;
+% 2 - chapter, section, и subsection;
+% 3 - chapter, section, subsection и subsubsection;
+% 4 - chapter, section, subsection, subsubsection и paragraph;
+\setcounter{tocdepth}{1}
+
+% -------------------------------------------------------
+% Set bibliography support
+% See the follow:
+%    https://ru.sharelatex.com/blog/2013/07/31/getting-started-with-biblatex.html
+% -------------------------------------------------------
+\usepackage{biblatex}
+\addbibresource{books}
+
+
+% -------------------------------------------------------
+% Интервалы, отступы, переносы и т.д.
+% -------------------------------------------------------
+% page style and geometry
+\usepackage{geometry}
+  \geometry{left=2cm}
+  \geometry{right=1.5cm}
+  \geometry{top=1.5cm}
+  \geometry{bottom=1.5cm}
+
+% Отступ "красной" строки
+\parindent=1cm %red string
+
+% Разрешить перенос слов.
+\sloppy
+
+% Удаление висячих строк
+\clubpenalty = 10000
+\widowpenalty = 10000
+
+% Название разделов по центру
+\usepackage{sectsty}
+\chapterfont{\centering}
+\sectionfont{\centering}
+\subsectionfont{\centering}
+
+%\righthyphenmin=2
+
+% полуторный интервал между строк
+\usepackage[onehalfspacing]{setspace}
+
+% настройка заголовков
+\usepackage{titlesec}
+
+%\titlespacing{\section}{0em}{1em}{0em} % top, left, bottom
+%\titlespacing{\subsection}{0em}{1em}{0em}
+%\titlespacing{\subsubsection}{0em}{0em}{0em}
+
+% Оформим отдельно работу с натальной картой
+\input{horo}
+
+% Begin [re]definiton
+\makeatletter
+	\renewcommand{\quoteit}[1]{\begin{center}\textit{#1}\end{center}}
+	\newcommand{\quotenr}[1]{\begin{center}{#1}\end{center}}
+
+	% Заголовки для введения, к читателю и пр. которые должны быть без номера
+	% но при этом присутствовать в содержании на одном уровне с главами.
+	% работает где есть chapter-ы (\documentclass{book})
+	\newcommand{\tocsection}[1] {
+		\section*{#1}
+		\addcontentsline{toc}{chapter}{#1}
+	}
+
+	% Стихи/цитаты в начале глав/разделов,
+	% прижатые к правому краю и выровненые по левому с поддержкой переноса слов.
+	\newcommand{\quoteintro}[2]{{\epigraphrule=0em\epigraph{#1}{#2}}}
+
+	% Вывод формул
+	\newcommand{\calc}[1]{\[#1\]}
+
+	% Вывод координат
+	% ----------------------------------------------
+	% Простой градус
+	\newcommand{\gradus}[1]{\ensuremath{#1^\circ}}
+
+	% Градус + минуты
+	\newcommand{\cord}[2]{\gradus{#1}\ensuremath{#2{^\prime}}}
+
+	% Градус + минуты + секунды
+	\newcommand{\coord}[3]{\cord{#1}{#2}\ensuremath{#3^{\prime\prime}}}
+
+	% Координата(градус) - знак зодиака - координата(минуты)
+	\newcommand{\signum}[3]{\(#1^\circ\){\small{#3}}%
+		\ifthenelse{\isempty#2}{}{\(#2^\prime\)}%
+	}
+	% ----------------------------------------------
+
+	% Форматы вывода времени
+	\newcommand{\timemath}[2]{#1:#2}
+
+	\newcommand{\timeshort}[3]{
+		\ifthenelse{\isempty#1}{}{#1ч}
+		\ifthenelse{\isempty#2}{}{\,#2мин}
+		\ifthenelse{\isempty#3}{}{\,#3сек}
+	}
+\makeatother
+
+% Кастомные списки
+% Как составной элемент, который может включать в себя другие новые сущности
+% должны быть объявлены после этих сущностей
+% https://tex.stackexchange.com/questions/300340/topsep-itemsep-partopsep-and-parsep-what-does-each-of-them-mean-and-wha
+\usepackage{enumitem}
+
+\newlist{myenum}{enumerate}{3}
+\setlist[myenum]{label=\arabic*.,itemsep=0em,parsep=1em}
+
+\newlist{myitem}{itemize}{3}
+\setlist[myitem]{label=--,itemsep=0em,parsep=0em}
+
+\newlist{mylist}{itemize}{3}
+\setlist[mylist]{itemsep=0em,parsep=0em,topsep=0em}
+
+\newlist{mydescr}{description}{3}
+\setlist[mydescr]{parsep=0em,topsep=0em,itemsep=0em}
+
+% -------------------------------------------------------
+% Нумерация страниц
+% Должна быть после настройки отступов иначе заголовок
+% будет неверного размера
+% -------------------------------------------------------
+\usepackage{fancyhdr} 
+
+\fancyhf{}
+\fancyhead[LO]{}
+\fancyhead[CO]{\textit{"Индийская предсказательная астрология"}}
+\fancyhead[LO]{}
+\fancyhead[RO]{\thepage}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% изменить стиль на страницах с началом главы и содержании
+\fancypagestyle{plain} {
+	\fancyhf{} % Сбросить всё
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+}
+
+% -------------------------------------------------------
+% Перекрестные ссылки в документе
+% -------------------------------------------------------
+\usepackage{color}
+%\usepackage{varioref}
+%\usepackage[plain]{fancyref}
+\usepackage{hyperref}
+
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=blue,
+	linktocpage,
+	unicode=true
+}
+%	hidelinks,
+%	breaklinks,
+%	unicode=true,
+%	pdftitle={},
+%	pdfauthor={},
+%	pdfkeywords={}
+%}
+
+% -------------------------------------------------------
+% Разбивка на главы/тексты
+% -------------------------------------------------------
+
+\includeonly{
+	title,
+	intro,
+  	prescript,
+	ch1,
+  	ch2,
+  	conclusion
+}
+
+\begin{document}
+% Сбросим стили
+\pagestyle{empty}
+
+% Список продОлбов
+%\listoffixmes
+
+% содержание
+% Шапка оглавление -> содержание
+\renewcommand\contentsname{СОДЕРЖАНИЕ}
+
+% обложка
+\include{title}
+\clearpage
+
+\begin{spacing}{0.9}
+\tableofcontents
+\addtocontents{toc}{~\hfill\textbf{Стр.}\par}
+\end{spacing}
+
+% Логическая область закончилась
+\clearpage
+
+% Применим стили
+\pagestyle{fancy}
+
+% Нумерация с этой страницы
+\setcounter{page}{3}
+
+% К читателю
+\include{intro}
+
+% Введение
+\include{prescript}
+
+% Главы
+\include{ch1}
+\include{ch2}
+
+% Заключение
+\include{conclusion}
+
+% Список литературы
+\newpage
+\printbibliography
+
+\end{document}

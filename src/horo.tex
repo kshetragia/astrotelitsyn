@@ -1,0 +1,169 @@
+
+% Натальная карта. Лучше оформить как пакет. Но пока и так норм.
+% Использует пакет keyval. подключать его придется в главном файле.
+%\usepackage{keyval}
+
+% Номер знака зодиака от Лагны в \natal
+% Возможно лучше использовать length
+\newcounter{Signum}
+
+\makeatletter
+	% Доступные ключи из \natal
+	\define@key{natal}{asc}{\setcounter{Signum}{#1}}
+	\define@key{natal}{one}{\def\nt@one{#1}}
+	\define@key{natal}{two}{\def\nt@two{#1}}
+	\define@key{natal}{three}{\def\nt@three{#1}}
+	\define@key{natal}{four}{\def\nt@four{#1}}
+	\define@key{natal}{five}{\def\nt@five{#1}}
+	\define@key{natal}{six}{\def\nt@six{#1}}
+	\define@key{natal}{seven}{\def\nt@seven{#1}}
+	\define@key{natal}{eight}{\def\nt@eight{#1}}
+	\define@key{natal}{nine}{\def\nt@nine{#1}}
+	\define@key{natal}{ten}{\def\nt@ten{#1}}
+	\define@key{natal}{eleven}{\def\nt@eleven{#1}}
+	\define@key{natal}{twelve}{\def\nt@twelve{#1}}
+
+	% Доступные ключи из \planets
+	\define@key{planets}{asc}{\def\pl@asc{#1}}
+	\define@key{planets}{su}{\def\pl@su{#1}}
+	\define@key{planets}{mo}{\def\pl@mo{#1}}
+	\define@key{planets}{ma}{\def\pl@ma{#1}}
+	\define@key{planets}{me}{\def\pl@me{#1}}
+	\define@key{planets}{ju}{\def\pl@ju{#1}}
+	\define@key{planets}{ve}{\def\pl@ve{#1}}
+	\define@key{planets}{sa}{\def\pl@sa{#1}}
+	\define@key{planets}{ra}{\def\pl@ra{#1}}
+	\define@key{planets}{ke}{\def\pl@ke{#1}}
+
+	% Значения ключей по умолчанию
+	\setkeys{natal}{asc=1}
+
+	% Определим новую команду \natal
+	\newcommand{\natal}[1][] {{
+		% Распарсим аргументы
+		\setkeys{natal}{#1}
+
+		\parindent=0
+		\begin{center}
+			\begin{tikzpicture}[scale=1.0]
+				\draw (-8,5) -- (8,5);
+				\draw (-8,-5) -- (8,-5);
+				\draw (-8,-5) -- (-8,5);
+				\draw (8,-5) -- (8,5);
+				\draw (-8,-5) -- (8,5);
+				\draw (-8,5) -- (8,-5);
+				\draw (8,0) -- (0,-5) -- (-8,0) -- (0,5) -- (8,0);
+
+				% Раскидаем знаки по домам от асцендента
+				% Asc (I)
+				\draw (0,0.5) node{\arabic{Signum}}; % (I)
+
+				% (II)
+				\ifthenelse{\equal{\theSignum}{12}}{\setcounter{Signum}{1}}{\addtocounter{Signum}{1}}
+				\draw (-4,3) node{\arabic{Signum}};
+
+				% (III)
+				\ifthenelse{\equal{\theSignum}{12}}{\setcounter{Signum}{1}}{\addtocounter{Signum}{1}}
+				\draw (-4.7,2.5) node{\arabic{Signum}};
+
+				% (IV)
+				\ifthenelse{\equal{\theSignum}{12}}{\setcounter{Signum}{1}}{\addtocounter{Signum}{1}}
+				\draw (-0.7,0) node{\arabic{Signum}};
+
+				% (V)
+				\ifthenelse{\equal{\theSignum}{12}}{\setcounter{Signum}{1}}{\addtocounter{Signum}{1}}
+				\draw (-4.7,-2.5) node{\arabic{Signum}};
+
+				% (VI)
+				\ifthenelse{\equal{\theSignum}{12}}{\setcounter{Signum}{1}}{\addtocounter{Signum}{1}}
+				\draw (-4,-3) node{\arabic{Signum}};
+
+				% (VII)
+				\ifthenelse{\equal{\theSignum}{12}}{\setcounter{Signum}{1}}{\addtocounter{Signum}{1}}
+				\draw (0,-0.5) node{\arabic{Signum}};
+
+				% (VIII)
+				\ifthenelse{\equal{\theSignum}{12}}{\setcounter{Signum}{1}}{\addtocounter{Signum}{1}}
+				\draw (4,-3) node{\arabic{Signum}};
+
+				% (IX)
+				\ifthenelse{\equal{\theSignum}{12}}{\setcounter{Signum}{1}}{\addtocounter{Signum}{1}}
+				\draw (4.7,-2.5) node{\arabic{Signum}};
+
+				% (X)
+				\ifthenelse{\equal{\theSignum}{12}}{\setcounter{Signum}{1}}{\addtocounter{Signum}{1}}
+				\draw (0.7,0) node{\arabic{Signum}};
+
+				% (XI)
+				\ifthenelse{\equal{\theSignum}{12}}{\setcounter{Signum}{1}}{\addtocounter{Signum}{1}}
+				\draw (4.7,2.5) node{\arabic{Signum}};
+
+				% (XII)
+				\ifthenelse{\equal{\theSignum}{12}}{\setcounter{Signum}{1}}{\addtocounter{Signum}{1}}
+				\draw (4,3) node{\arabic{Signum}};
+
+				% Раскидаем планеты по домам. К сожалению есть ограничение на количество аргументов команды.
+				% Поэтом все 12 домов определены как отдельные переменные \houseone, \housetwo, и.т.д.
+				% (I)
+				\draw (0,2.5) node{\begin{minipage}[c]{6em}\nt@one\end{minipage}};
+
+				% (II)
+				\draw (-4,4.1) node{\begin{minipage}[c]{6em}\nt@two\end{minipage}};
+
+				% (III)
+				\draw (-6.5,2.5) node{\begin{minipage}[c]{6em}\nt@three\end{minipage}};
+
+				% (IV)
+				\draw (-4,0) node{\begin{minipage}[c]{6em}\nt@four\end{minipage}};
+
+				% (V)
+				\draw (-6.5,-2.5) node{\begin{minipage}[c]{6em}\nt@five\end{minipage}};
+
+				% (VI)
+				\draw (-4,-4.1) node{\begin{minipage}[c]{6em}\nt@six\end{minipage}};
+
+				% (VII)
+				\draw (0,-2.5) node{\begin{minipage}[c]{6em}\nt@seven\end{minipage}};
+
+				% (VIII)
+				\draw (4,-4.1) node{\begin{minipage}[c]{6em}\nt@eight\end{minipage}};
+
+				% (IX)
+				\draw (6.5,-2.5) node{\begin{minipage}[c]{6em}\nt@nine\end{minipage}};
+
+				% (X)
+				\draw (4,0) node{\begin{minipage}[c]{6em}\nt@ten\end{minipage}};
+
+				% (XI)
+				\draw (6.5,2.5) node{\begin{minipage}[c]{6em}\nt@eleven\end{minipage}};
+
+				% (XII)
+				\draw (4,4.1) node{\begin{minipage}[c]{6em}\nt@twelve\end{minipage}};
+
+			\end{tikzpicture}
+		\end{center}
+		}}
+
+
+		\newcommand{\planets}[1][] {{
+			% Распарсим аргументы
+			\setkeys{planets}{#1}
+
+			\parindent=0
+
+			\begin{table}[tph!]
+				\centering
+
+				% Заполним данными
+				\begin{tabular}{ll|ll}
+					Асцендент & \pl@asc & Юпитер & \pl@ju \\
+					Солнце    & \pl@su  & Венера & \pl@ve \\
+					Луна      & \pl@mo  & Сатурн & \pl@sa \\
+					Марс      & \pl@ma  & Раху   & \pl@ra \\
+					Меркурий  & \pl@me  & Кету   & \pl@ke \\
+				\end{tabular}
+			\end{table}
+		}}
+
+\makeatother
+
